@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginService } from "../../services/login/index"; 
-import { useAuth } from '../../context/AuthContext';
-import Header from '../../components/Header'; // Importando o componente padrão
+import { loginService } from "../../services/login/loginService.js"; 
+import { useAuth } from '../../context/AuthContext.jsx';
+import Header from '../../components/Header/index.jsx'; // Importando o componente padrão
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -135,4 +135,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Login; 
