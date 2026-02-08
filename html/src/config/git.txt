@@ -1,3 +1,0 @@
-git config --global user.name "N371"
-git config --global user.email "msn_nelson@hotmail.com"
-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
