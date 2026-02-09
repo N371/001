@@ -78,4 +78,15 @@ mock.onGet('/admin/users').reply(200, [
   { id: 3, nome: "Auxiliar Maria", email: "maria@contato.com", nivel: "Operacional" }
 ]);
 
+mock.onPost('/admin/users').reply((config) => {
+  const newUser = JSON.parse(config.data);
+  console.log(`[SIMULADOR 001] Criando novo usuário: ${newUser.nome}`);
+  
+  return [201, { 
+    status: 201, 
+    msg: "Usuário decolou com sucesso!", 
+    user: { ...newUser, id: Math.floor(Math.random() * 1000) } 
+  }];
+});
+
 export default api;

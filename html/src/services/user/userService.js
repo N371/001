@@ -1,4 +1,4 @@
-import api from './api';
+import api from '../api';
 
 export const getUsersService = async () => {
   try {
@@ -8,4 +8,9 @@ export const getUsersService = async () => {
     console.error("Erro ao buscar lista de usuários:", error);
     throw error;
   }
+};
+
+export const createUserService = async (userData) => {
+    const response = await api.post('/admin/users', userData);
+    return response.data;
 };

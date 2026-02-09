@@ -77,7 +77,307 @@ Operações em lote NF-e
 
 
 
+Caso de Uso: Sistema de Gestão Contábil Multi-empresa
+1. Visão Geral do Sistema
+Sistema web para escritórios de contabilidade gerenciarem múltiplas empresas clientes, com controle granular de acessos e funcionalidades fiscais automatizadas.
 
+2. Atores do Sistema
+2.1 Usuário Master (Administrador)
+
+Proprietário ou gestor do escritório contábil
+Controle total sobre sistema, usuários e empresas
+
+2.2 Contador/Analista Sênior
+
+Pode manifestar documentos fiscais
+Gera relatórios gerenciais
+Acesso completo às empresas do seu grupo
+
+2.3 Assistente Contábil
+
+Consulta documentos e dados
+Extração de XMLs
+Acesso somente leitura
+
+2.4 Auxiliar Administrativo
+
+Cadastro de empresas e documentos
+Organização de arquivos
+Sem acesso a manifestações fiscais
+
+
+                        3. Casos de Uso Principais
+
+                        CU01: Gerenciar Usuários
+
+Ator: Usuário Master
+Descrição: Cadastrar, editar, inativar usuários e definir permissões
+Fluxo Principal:
+Master acessa módulo de usuários
+Clica em "Novo Usuário"
+Preenche dados: nome, email, cargo, CPF
+Define perfil de acesso (Master, Contador, Assistente, Auxiliar)
+Atribui grupos de empresas permitidos
+Define permissões específicas:
+
+☑ Consultar documentos
+☑ Manifestar NFe
+☑ Gerar relatórios
+☑ Download XMLs
+☑ Cadastrar empresas
+☑ Editar dados cadastrais
+
+
+Sistema envia email de convite
+Usuário ativa conta com senha própria
+
+
+                        CU02: Cadastrar e Organizar Empresas
+
+Ator: Master ou usuário com permissão
+Descrição: Incluir empresas clientes no sistema
+Fluxo Principal:
+
+Acessa módulo "Empresas"
+Clica em "Nova Empresa"
+Preenche dados:
+
+CNPJ (valida na Receita Federal)
+Razão Social e Nome Fantasia
+Regime tributário (Simples, Presumido, Real)
+CNAE principal
+Endereço completo
+Certificado digital (upload .pfx)
+Responsável/contador
+
+
+Define integrações:
+
+☑ SEFAZ automática
+☑ Simples Nacional
+☑ eSocial
+☑ EFD Contribuições
+
+
+Sistema valida certificado e credenciais
+Empresa fica disponível para uso
+
+Fluxo Alternativo: Importação em lote via planilha Excel
+
+
+
+                        CU03: Criar e Gerenciar Grupos de Empresas
+
+
+Ator: Usuário Master
+Descrição: Organizar empresas em grupos e atribuir a usuários
+Fluxo Principal:
+
+Acessa "Grupos de Empresas"
+Cria novo grupo (ex: "Indústrias", "Comércios - Região Sul", "Prestadoras de Serviço")
+Seleciona empresas para incluir no grupo
+Atribui usuários responsáveis pelo grupo
+Define permissões do grupo:
+
+Período de acesso (mês atual, últimos 3 meses, histórico completo)
+Módulos permitidos
+
+
+Sistema aplica restrições automaticamente
+
+Regra de Negócio: Uma empresa pode pertencer a múltiplos grupos
+
+                CU04: Consultar e Baixar XMLs de Notas Fiscais
+
+Ator: Qualquer usuário com permissão
+Descrição: Pesquisar e fazer download de XMLs de NFe/NFCe/CTe
+Fluxo Principal:
+
+Seleciona empresa(s) desejada(s)
+Define filtros:
+
+Período (data emissão/recebimento)
+Tipo documento (NFe, NFCe, CTe, NFSe)
+Status (autorizada, cancelada, denegada)
+Fornecedor/Cliente (CNPJ ou nome)
+Valor mínimo/máximo
+Chave de acesso
+
+
+Sistema busca nos repositórios:
+
+Base local
+SEFAZ (download automático se não existir)
+Email (importação de anexos)
+
+
+Exibe resultados em grid com:
+
+Número, série, data
+Emitente/destinatário
+Valor total
+Status manifestação
+
+
+Usuário seleciona documentos
+Opções:
+
+Download individual (XML)
+Download em lote (ZIP)
+Exportar lista (Excel/PDF)
+Enviar por email
+
+
+
+Fluxo Alternativo: Sistema agenda busca automática diária na SEFAZ
+
+                        CU05: Manifestar Documentos Fiscais
+
+Ator: Contador/Analista com permissão
+Descrição: Realizar manifestação do destinatário (Ciência, Confirmação, Desconhecimento, Operação não Realizada)
+Fluxo Principal:
+
+Acessa módulo "Manifestação"
+Sistema exibe NFes pendentes de manifestação
+Usuário revisa documento:
+
+Visualiza DANFE
+Confere dados do XML
+Valida com pedido de compra (se integrado)
+
+
+Seleciona tipo de manifestação
+Adiciona justificativa (se obrigatório)
+Confirma operação
+Sistema:
+
+Envia evento para SEFAZ
+Registra retorno (protocolo e data)
+Atualiza status do documento
+Registra log de auditoria (quem, quando, qual manifestação)
+
+
+
+Regra de Negócio:
+
+Somente NFes destinadas à empresa podem ser manifestadas
+Prazo máximo: 180 dias da autorização
+
+
+                        CU06: Gerar Relatórios Gerenciais
+
+
+Ator: Usuário com permissão
+Descrição: Criar relatórios fiscais e gerenciais
+Relatórios Disponíveis:
+Fiscais:
+
+Livro de Entradas e Saídas
+Apuração de ICMS/IPI
+Resumo de notas por CFOP
+Controle de manifestações
+Pendências fiscais (NFes sem manifestação, vencimentos)
+
+Gerenciais:
+
+Faturamento por empresa/grupo/período
+Compras por fornecedor
+Ranking de clientes
+Margem de contribuição
+Fluxo de caixa projetado (baseado em NFes)
+
+Fluxo Principal:
+
+Seleciona tipo de relatório
+Define parâmetros:
+
+Empresa(s) ou grupo(s)
+Período
+Filtros específicos
+
+
+Escolhe formato (PDF, Excel, dashboard interativo)
+Sistema processa e gera relatório
+Opções:
+
+Visualizar online
+Download
+Agendar envio automático (email recorrente)
+Salvar como favorito
+
+
+
+
+                                CU07: Dashboard e Indicadores
+
+                                
+Ator: Todos os usuários
+Descrição: Visualização em tempo real de métricas-chave
+Widgets Disponíveis:
+
+Total de empresas ativas
+NFes processadas (mês atual vs. anterior)
+Pendências por tipo (manifestações, certidões vencidas, obrigações)
+Gráfico de faturamento consolidado
+Alertas e notificações
+Tarefas pendentes do usuário
+Últimas atividades do sistema
+
+
+4. Funcionalidades Adicionais Sugeridas
+4.1 Gestão de Obrigações Acessórias
+
+Calendário de vencimentos (DCTF, EFD, SPED)
+Notificações automáticas
+Controle de envio e protocolo
+Histórico de entregas
+
+4.2 Controle de Certidões
+
+Upload de certidões (Federal, Estadual, Municipal, FGTS)
+Alertas de vencimento (30, 15, 7 dias)
+Renovação automática (se integrado)
+
+4.3 Conciliação Contábil
+
+Comparação XML vs. lançamento contábil
+Identificação de divergências
+Sugestão de lançamentos
+
+4.4 Armazenamento Legal de Documentos
+
+Repositório organizado por empresa/ano/mês
+Backup automático criptografado
+Assinatura digital com timestamp
+Atendimento à legislação (guarda de 5 anos)
+
+4.5 Auditoria e Logs
+
+Registro de todas as ações dos usuários
+Relatório de acessos por empresa
+Controle de alterações em cadastros
+Rastreabilidade completa
+
+4.6 Portal do Cliente
+
+Acesso limitado para empresas consultarem seus próprios dados
+Download de relatórios e documentos
+Abertura de solicitações/tickets
+Acompanhamento de obrigações
+
+4.7 Integrações
+
+ERP dos clientes (TOTVS, SAP, Omie)
+Bancos (OFX, extrato automático)
+Plataformas de e-commerce
+Emissores de NFe
+
+4.8 Notificações Inteligentes
+
+Email/SMS para vencimentos
+Alertas de irregularidades fiscais
+Notificações de NFes recebidas
+Resumo semanal/mensal automático
 
 
 

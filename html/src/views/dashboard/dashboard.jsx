@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header';
 import { useAuth } from '../../context/AuthContext';
 import { getMenuService } from '../../services/menuService';
-import UserAdmin from './UserAdmin'; // Importaremos o novo componente aqui
+import UserAdmin from './UserAdmin.jsx'; // Importaremos o novo componente aqui
 import { 
   FaFileInvoice, FaCloudUploadAlt, FaChartBar, FaCog, FaExclamationTriangle 
 } from 'react-icons/fa';
